@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>УрФУ НВК 2025 — Операционный портал переезда</title>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f13;--surface:#17171d;--surface2:#1e1e26;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#e8e6f0;--muted:#7a7890;--hint:#3a3858;
+  --purple:#7c6fe0;--purple-bg:rgba(124,111,224,0.12);--purple-border:rgba(124,111,224,0.3);
+  --teal:#2ebf8a;--teal-bg:rgba(46,191,138,0.1);--teal-border:rgba(46,191,138,0.28);
+  --amber:#f0a832;--amber-bg:rgba(240,168,50,0.1);--amber-border:rgba(240,168,50,0.28);
+  --coral:#e86040;--coral-bg:rgba(232,96,64,0.1);--coral-border:rgba(232,96,64,0.28);
+  --blue:#4a9eed;--blue-bg:rgba(74,158,237,0.1);--blue-border:rgba(74,158,237,0.28);
+  --green:#5ab848;--green-bg:rgba(90,184,72,0.1);--green-border:rgba(90,184,72,0.28);
+  --r:8px;--rl:14px;--sidebar:240px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+
+/* SIDEBAR */
+.sidebar{
+  width:var(--sidebar);flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  height:100vh;position:sticky;top:0;
+  display:flex;flex-direction:column;overflow-y:auto;
+}
+.sidebar-logo{
+  padding:20px 16px 16px;
+  border-bottom:1px solid var(--border);
+}
+.sidebar-logo-title{font-size:13px;font-weight:700;color:var(--purple);letter-spacing:.04em}
+.sidebar-logo-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.sidebar-section{padding:16px 12px 8px;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--hint)}
+.sidebar-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;margin:1px 6px;
+  border-radius:6px;cursor:pointer;
+  font-size:12px;color:var(--muted);
+  transition:all .15s;border:none;background:none;
+  font-family:inherit;text-align:left;width:calc(100% - 12px);
+}
+.sidebar-item:hover{color:var(--text);background:var(--surface2)}
+.sidebar-item.active{color:var(--text);background:var(--surface2);font-weight:500}
+.sidebar-item .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sidebar-footer{margin-top:auto;padding:12px 16px;border-top:1px solid var(--border);font-size:10px;color:var(--hint);line-height:1.5}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;min-width:0}
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(15,15,19,0.94);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 28px;height:48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.topbar-title{font-size:13px;font-weight:500;color:var(--text)}
+.topbar-sub{font-size:11px;color:var(--muted)}
+.topbar-right{display:flex;gap:8px;align-items:center}
+.topbar-badge{font-size:10px;padding:3px 8px;border-radius:99px;font-weight:500}
+
+/* CONTENT */
+.content{padding:32px 28px 80px;max-width:1100px}
+.page-section{display:none}
+.page-section.active{display:block}
+
+/* HERO */
+.hero{padding:0 0 32px;border-bottom:1px solid var(--border);margin-bottom:36px}
+.hero-tag{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);margin-bottom:10px}
+.hero-title{font-size:30px;font-weight:700;line-height:1.2;margin-bottom:8px}
+.hero-title span{color:var(--purple)}
+.hero-desc{font-size:14px;color:var(--muted);max-width:600px;line-height:1.7}
+.hero-stats{display:flex;gap:28px;margin-top:24px;flex-wrap:wrap}
+.hero-stat-n{font-size:28px;font-weight:700;line-height:1}
+.hero-stat-l{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* SECTION HEADER */
+.sec-tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:10px}
+.sec-title{font-size:22px;font-weight:700;color:var(--text);margin-bottom:5px;line-height:1.2}
+.sec-sub{font-size:13px;color:var(--muted);margin-bottom:20px;max-width:680px;line-height:1.7}
+.block-gap{margin-bottom:52px}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:18px}
+.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.card-sub{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+
+/* STATS */
+.stat{background:var(--surface2);border-radius:var(--r);padding:12px 14px}
+.stat-n{font-size:24px;font-weight:700;line-height:1;margin-bottom:3px}
+.stat-l{font-size:10px;color:var(--muted)}
+
+/* FLOW */
+.flow-row{display:flex;align-items:center;overflow-x:auto;padding-bottom:4px}
+.flow-node{display:flex;flex-direction:column;align-items:center;min-width:90px;flex-shrink:0}
+.flow-dot{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;text-align:center;margin-bottom:7px;border:2px solid transparent;line-height:1.3}
+.flow-label{font-size:10px;text-align:center;color:var(--muted);line-height:1.3}
+.flow-arrow{color:var(--hint);font-size:18px;flex-shrink:0;margin-bottom:22px;padding:0 3px}
+
+/* FIELDS */
+.field{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+.field:last-child{border-bottom:none}
+.field-k{color:var(--muted)}
+.field-v{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text)}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:9px}
+.step{display:flex;gap:9px;align-items:flex-start}
+.step-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;margin-top:2px}
+.step-text{font-size:12px;line-height:1.5}
+.step-note{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* RISKS */
+.risk{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border)}
+.risk:last-child{border-bottom:none}
+.risk-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.risk-title{font-size:12px;font-weight:500;margin-bottom:2px}
+.risk-fix{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* SWIMLANE */
+.swimlane-wrap{border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.swimlane-row{display:flex;border-bottom:1px solid var(--border)}
+.swimlane-row:last-child{border-bottom:none}
+.swimlane-label{width:82px;flex-shrink:0;padding:10px;font-size:10px;font-weight:600;display:flex;align-items:center;border-right:1px solid var(--border);color:var(--muted);letter-spacing:.04em;line-height:1.4}
+.swimlane-cells{flex:1;display:flex;overflow-x:auto;padding:7px;gap:4px}
+.sw-cell{flex-shrink:0;width:120px;min-height:56px;border-radius:var(--r);padding:7px 9px;font-size:10px;line-height:1.4;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:500;border:1px solid transparent}
+.sw-cell.empty{background:transparent;border:1px dashed var(--border);color:var(--hint)}
+
+/* VOL */
+.vol-row{display:flex;align-items:center;gap:11px;padding:10px;background:var(--surface2);border-radius:var(--r);margin-bottom:7px}
+.vol-count{font-size:26px;font-weight:700;min-width:36px;text-align:center;line-height:1}
+.vol-title{font-size:12px;font-weight:600;margin-bottom:2px}
+.vol-desc{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* MAP */
+.map-zone{border:1px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:10px}
+.zone-title{font-size:12px;font-weight:600;margin-bottom:10px}
+.cells-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.cell-item{border-radius:5px;padding:7px 5px;font-size:9px;text-align:center;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:transform .12s;border:1px solid transparent}
+.cell-item:hover{transform:scale(1.07)}
+.cell-free{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
+.cell-occ{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue)}
+.cell-res{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber)}
+.cell-id{font-size:8px;margin-top:2px;color:var(--muted)}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:22px}
+.timeline::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:1px;background:var(--border2)}
+.tl-item{position:relative;margin-bottom:18px}
+.tl-dot{position:absolute;left:-19px;top:5px;width:9px;height:9px;border-radius:50%;border:2px solid;background:var(--bg)}
+.tl-date{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);margin-bottom:3px}
+.tl-title{font-size:13px;font-weight:600;margin-bottom:2px}
+.tl-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:12px 0}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:500}
+
+/* IMPL CARDS */
+.impl-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.impl-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:12px}
+.impl-card.rec{border-color:var(--teal-border);background:var(--teal-bg)}
+.impl-letter{font-size:18px;font-weight:700;margin-bottom:7px}
+.impl-name{font-size:12px;font-weight:600;margin-bottom:5px}
+.impl-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.impl-tag{font-size:10px;margin-top:7px;display:inline-block;padding:2px 7px;border-radius:99px}
+
+/* SEARCH */
+.search-box{display:flex;gap:8px;margin-bottom:10px}
+.search-box input{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:7px 12px;color:var(--text);font-family:inherit;font-size:12px;outline:none}
+.search-box input:focus{border-color:var(--purple)}
+.search-box input::placeholder{color:var(--hint)}
+.search-result{background:var(--surface2);border:1px solid var(--purple-border);border-radius:var(--r);padding:12px;font-size:12px;display:none}
+.search-result.visible{display:block}
+
+/* BUDGET TABLE */
+.budget-table{width:100%;border-collapse:collapse;font-size:12px}
+.budget-table th{text-align:left;padding:7px 10px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border2)}
+.budget-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+.budget-table tr:last-child td{border-bottom:none}
+.budget-table tr:hover td{background:var(--surface2)}
+.budget-table .price{font-family:'JetBrains Mono',monospace;font-size:11px;text-align:right;white-space:nowrap}
+.budget-table .qty{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-align:right}
+.budget-table .total-row td{font-weight:600;background:var(--surface2)}
+.budget-table .sec-header td{background:var(--hint);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px}
+.source-link{font-size:10px;color:var(--blue);text-decoration:none;font-family:'JetBrains Mono',monospace}
+.source-link:hover{text-decoration:underline}
+
+/* CALC */
+.calc-wrap{background:var(--surface2);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.calc-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px}
+.calc-row:last-child{border-bottom:none;font-weight:600;padding-top:9px}
+.calc-label{color:var(--muted)}
+.calc-val{font-family:'JetBrains Mono',monospace;font-weight:600}
+
+/* VAN CARDS */
+.van-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:7px}
+.van-title{font-size:12px;font-weight:600;margin-bottom:3px}
+.van-desc{font-size:11px;color:var(--muted);line-height:1.4}
+.van-price{font-size:16px;font-weight:700;margin:6px 0 3px}
+.van-note{font-size:10px;color:var(--muted)}
+
+/* TOTAL */
+.total-card{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--rl);padding:20px}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(124,111,224,0.15);font-size:12px}
+.total-row:last-child{border-bottom:none;font-size:15px;font-weight:700;padding-top:12px}
+.total-label{color:var(--muted)}
+.total-val{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--text)}
+.total-main{color:var(--purple);font-size:24px}
+
+/* INTERACTIVE CALC */
+.i-calc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:18px;margin-top:10px}
+.i-calc-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.i-calc-label{font-size:12px;color:var(--muted);min-width:180px}
+.i-calc-val{font-size:18px;font-weight:700;min-width:70px;font-family:'JetBrains Mono',monospace}
+.i-calc-row input[type=range]{flex:1;min-width:100px}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:4px}
+.result-item{background:var(--surface2);border-radius:var(--r);padding:10px}
+.result-n{font-size:18px;font-weight:700;margin-bottom:2px;font-family:'JetBrains Mono',monospace}
+.result-l{font-size:10px;color:var(--muted)}
+
+/* SMELL */
+.smell-item{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border)}
+.smell-item:last-child{border-bottom:none}
+.smell-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.smell-title{font-size:12px;font-weight:600;margin-bottom:2px}
+.smell-desc{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* COLORS */
+.c-purple{color:var(--purple)}.c-teal{color:var(--teal)}.c-amber{color:var(--amber)}.c-coral{color:var(--coral)}.c-blue{color:var(--blue)}.c-green{color:var(--green)}.c-muted{color:var(--muted)}
+.tag-purple{background:var(--purple-bg);border:1px solid var(--purple-border);color:var(--purple)}
+.tag-teal{background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal)}
+.tag-amber{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
+.tag-coral{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral)}
+.tag-blue{background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue)}
+.tag-green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+
+/* MOBILE TOGGLE */
+.mobile-toggle{display:none;position:fixed;bottom:20px;right:20px;z-index:200;background:var(--purple);border:none;border-radius:50%;width:44px;height:44px;cursor:pointer;font-size:18px;color:#fff;align-items:center;justify-content:center}
+@media(max-width:720px){
+  .sidebar{position:fixed;left:-260px;top:0;z-index:150;transition:left .2s;height:100vh}
+  .sidebar.open{left:0}
+  .mobile-toggle{display:flex}
+  .content{padding:20px 16px 80px}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.page-section.active{animation:fadeUp .3s ease both}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-title">УрФУ НВК 2025</div>
+    <div class="sidebar-logo-sub">Операционный портал переезда</div>
+  </div>
+
+  <div class="sidebar-section">Обзор</div>
+  <button class="sidebar-item active" onclick="nav('home',this)">
+    <span class="dot" style="background:var(--purple)"></span>Главная
+  </button>
+
+  <div class="sidebar-section">Операционный план</div>
+  <button class="sidebar-item" onclick="nav('qr',this)">
+    <span class="dot" style="background:var(--teal)"></span>QR-система и данные
+  </button>
+  <button class="sidebar-item" onclick="nav('student',this)">
+    <span class="dot" style="background:var(--blue)"></span>Путь студента
+  </button>
+  <button class="sidebar-item" onclick="nav('vols',this)">
+    <span class="dot" style="background:var(--coral)"></span>Волонтёры
+  </button>
+  <button class="sidebar-item" onclick="nav('storage',this)">
+    <span class="dot" style="background:var(--blue)"></span>Карта хранения
+  </button>
+  <button class="sidebar-item" onclick="nav('timeline',this)">
+    <span class="dot" style="background:var(--amber)"></span>Тайм-лайн
+  </button>
+
+  <div class="sidebar-section">Смета и логистика</div>
+  <button class="sidebar-item" onclick="nav('gazelle',this)">
+    <span class="dot" style="background:var(--amber)"></span>Расчёт газелей
+  </button>
+  <button class="sidebar-item" onclick="nav('materials',this)">
+    <span class="dot" style="background:var(--teal)"></span>Расходники
+  </button>
+  <button class="sidebar-item" onclick="nav('smell',this)">
+    <span class="dot" style="background:var(--coral)"></span>Запах и холодильники
+  </button>
+  <button class="sidebar-item" onclick="nav('equipment',this)">
+    <span class="dot" style="background:var(--blue)"></span>Оборудование
+  </button>
+  <button class="sidebar-item" onclick="nav('budget',this)">
+    <span class="dot" style="background:var(--purple)"></span>Итоговая смета
+  </button>
+  <button class="sidebar-item" onclick="nav('calc',this)">
+    <span class="dot" style="background:var(--green)"></span>Калькулятор
+  </button>
+
+  <div class="sidebar-footer">
+    Цены проверены май 2025<br>
+    Источник расходников: sima-land.ru<br>
+    Транспорт: Екатеринбург
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="topbar-title">Главная</div>
+      <div class="topbar-sub" id="topbar-sub">Операционный портал переезда кампуса НВК</div>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-badge tag-coral">15 июня — 1 июля</span>
+      <span class="topbar-badge tag-green">2 259 студентов</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- HOME -->
+  <div class="page-section active" id="sec-home">
+    <div class="hero">
+      <div class="hero-tag">Операционный портал</div>
+      <div class="hero-title">Переезд кампуса <span>НВК 2025</span></div>
+      <div class="hero-desc">Комплексный план временного переезда 2 259 студентов УрФУ из кампуса Новокольцовского микрорайона. Молодёжное мероприятие → выезд студентов → хранение вещей → возврат.</div>
+      <div class="hero-stats">
+        <div><div class="hero-stat-n c-purple">2 259</div><div class="hero-stat-l">студентов</div></div>
+        <div><div class="hero-stat-n c-teal">238</div><div class="hero-stat-l">слотов выезда</div></div>
+        <div><div class="hero-stat-n c-amber">80</div><div class="hero-stat-l">волонтёров в пуле</div></div>
+        <div><div class="hero-stat-n c-coral">17</div><div class="hero-stat-l">дней выезда</div></div>
+        <div><div class="hero-stat-n c-blue">60</div><div class="hero-stat-l">ячеек хранения</div></div>
+        <div><div class="hero-stat-n c-green">≈1,9 млн</div><div class="hero-stat-l">₽ бюджет проекта</div></div>
+      </div>
+    </div>
+
+    <div class="g2" style="margin-bottom:12px">
+      <div class="card">
+        <div class="card-title">Хронология проекта</div>
+        <div class="card-sub">Ключевые этапы с июня по октябрь 2025</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot" style="border-color:var(--purple);background:var(--purple)"></div><div class="tl-date">До 15 июня</div><div class="tl-title">Молодёжное мероприятие в кампусе</div><div class="tl-desc">Кампус НВК используется для гостей мероприятия. Студенты должны освободить помещения.</div></div>
+          <div class="tl-item"><div class="tl-dot" style="border-color:var(--amber);background:var(--amber)"></div><div class="tl-date">Июль (старт)</div><div class="tl-title">Информационная кампания и подписание соглашений</div><div class="tl-desc">Плакаты, маскот, FAQ, регистрация в приложении, бронирование слотов.</div></div>
+          <div class="tl-item"><div class="tl-dot" style="border-color:var(--coral);background:var(--coral)"></div><div class="tl-date">15 июня — 1 июля ★</div><div class="tl-title">Основной период выезда</div><div class="tl-desc">14 слотов/день, 3 палатки, 20 волонтёров/смену, транспортировка вещей в ИРИТ.</div></div>
+          <div class="tl-item"><div class="tl-dot" style="border-color:var(--blue);background:var(--blue)"></div><div class="tl-date">Июль — Сентябрь</div><div class="tl-title">Хранение в ИРИТ-РТФ</div><div class="tl-desc">Охрана 24/7, три зоны склада, QR-система учёта.</div></div>
+          <div class="tl-item"><div class="tl-dot" style="border-color:var(--green);background:var(--green)"></div><div class="tl-date">1–5 октября ★</div><div class="tl-title">Возврат вещей и заселение</div><div class="tl-desc">Студенты получают вещи по слотам, подписывают акты, заезжают в кампус.</div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card">
+          <div class="card-title">Навигация по разделам</div>
+          <div class="card-sub">Выбери нужный раздел в меню слева или нажми ниже</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <button onclick="nav('qr',null)" style="background:var(--teal-bg);border:1px solid var(--teal-border);border-radius:var(--r);padding:9px 12px;color:var(--teal);font-size:12px;font-weight:500;cursor:pointer;text-align:left;font-family:inherit">QR-система и база данных вещей →</button>
+            <button onclick="nav('student',null)" style="background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--r);padding:9px 12px;color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;text-align:left;font-family:inherit">Путь студента по шагам →</button>
+            <button onclick="nav('vols',null)" style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--r);padding:9px 12px;color:var(--coral);font-size:12px;font-weight:500;cursor:pointer;text-align:left;font-family:inherit">Система волонтёров (20 в смену) →</button>
+            <button onclick="nav('storage',null)" style="background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--r);padding:9px 12px;color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;text-align:left;font-family:inherit">Карта хранения ИРИТ-РТФ →</button>
+            <button onclick="nav('budget',null)" style="background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--r);padding:9px 12px;color:var(--purple);font-size:12px;font-weight:500;cursor:pointer;text-align:left;font-family:inherit">Итоговая смета ≈1,9 млн ₽ →</button>
+            <button onclick="nav('calc',null)" style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r);padding:9px 12px;color:var(--green);font-size:12px;font-weight:500;cursor:pointer;text-align:left;font-family:inherit">Интерактивный калькулятор →</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Ключевые параметры</div>
+          <div class="field"><span class="field-k">Период выезда</span><span class="field-v c-coral">15.06 — 01.07</span></div>
+          <div class="field"><span class="field-k">Слотов в день</span><span class="field-v">14 (07:00–20:00)</span></div>
+          <div class="field"><span class="field-k">Студентов на слот</span><span class="field-v">~10 реально / 27 с запасом</span></div>
+          <div class="field"><span class="field-k">Волонтёров в смену</span><span class="field-v">20 чел. (2 смены)</span></div>
+          <div class="field"><span class="field-k">Пункты выдачи</span><span class="field-v">3 палатки</span></div>
+          <div class="field"><span class="field-k">Склад</span><span class="field-v">ИРИТ-РТФ, зоны А/Б/В</span></div>
+          <div class="field"><span class="field-k">Газелей в день</span><span class="field-v">2 штатно / 3 в пиковые дни</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR СИСТЕМА -->
+  <div class="page-section" id="sec-qr">
+    <div class="block-gap">
+      <div class="sec-tag tag-purple">Блок 1</div>
+      <div class="sec-title">QR-система и база данных вещей</div>
+      <div class="sec-sub">Один уникальный ID студента связывает всё. Нельзя подделать — хэш в QR включает ID + дату + соль.</div>
+
+      <div class="g2" style="margin-bottom:12px">
+        <div class="card">
+          <div class="card-title">Структура мастер-ID студента</div>
+          <div style="background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--r);padding:9px 12px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--purple);text-align:center;letter-spacing:.06em">НВ-2259-0001</div>
+          <div class="field"><span class="field-k">ФИО студента</span><span class="field-v">Иванов И.И.</span></div>
+          <div class="field"><span class="field-k">Комната</span><span class="field-v">К4-218</span></div>
+          <div class="field"><span class="field-k">Тип</span><span class="field-v">бюджет</span></div>
+          <div class="field"><span class="field-k">Слот выезда</span><span class="field-v">18.06 / 10:00</span></div>
+          <div class="field"><span class="field-k">Статус</span><span class="field-v c-amber">упаковка</span></div>
+          <div class="field"><span class="field-k">Ячейка хранения</span><span class="field-v">ИРИТ-А-14</span></div>
+          <div class="divider"></div>
+          <div class="field"><span class="field-k">Коробка 1</span><span class="field-v c-purple">НВ-0001-B01</span></div>
+          <div class="field"><span class="field-k">Коробка 2</span><span class="field-v c-purple">НВ-0001-B02</span></div>
+          <div class="field"><span class="field-k">Чехол матраса</span><span class="field-v c-purple">НВ-0001-M01</span></div>
+          <div class="field"><span class="field-k">Пакет крупных вещей</span><span class="field-v c-purple">НВ-0001-L01</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card">
+            <div class="card-title">Как работает пломба</div>
+            <div class="steps">
+              <div class="step"><div class="step-num" style="background:var(--purple-bg);color:var(--purple)">1</div><div><div class="step-text">Волонтёр сканирует ID студента</div><div class="step-note">Система генерирует уникальные ID для коробок</div></div></div>
+              <div class="step"><div class="step-num" style="background:var(--purple-bg);color:var(--purple)">2</div><div><div class="step-text">Принтер печатает QR: номер + ФИО + дата + хэш</div><div class="step-note">SHA256(ID + дата + соль сервера)</div></div></div>
+              <div class="step"><div class="step-num" style="background:var(--purple-bg);color:var(--purple)">3</div><div><div class="step-text">Наклейка + пломба-стикер (одноразовая)</div><div class="step-note">При вскрытии деформируется</div></div></div>
+              <div class="step"><div class="step-num" style="background:var(--purple-bg);color:var(--purple)">4</div><div><div class="step-text">При сдаче — сканирование, проверка хэша</div><div class="step-note">Несовпадение = красный флаг в журнале</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Поиск по базе</div>
+            <div class="search-box"><input type="text" id="si" placeholder="НВ-2259-0001 или К4-218..." oninput="doSearch(this.value)"></div>
+            <div class="search-result" id="sr"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">Жизненный цикл коробки — 6 статусов</div>
+        <div class="card-sub">Каждый переход: фото + время + ID волонтёра</div>
+        <div class="flow-row">
+          <div class="flow-node"><div class="flow-dot" style="background:var(--purple-bg);border-color:var(--purple);color:var(--purple)">Создана</div><div class="flow-label">Пункт выдачи<br>QR напечатан</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-dot" style="background:var(--teal-bg);border-color:var(--teal);color:var(--teal)">У студента</div><div class="flow-label">Комната<br>Упаковка</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-dot" style="background:var(--amber-bg);border-color:var(--amber);color:var(--amber)">Сдана</div><div class="flow-label">Накоп. пункт<br>Фото + акт</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-dot" style="background:var(--amber-bg);border-color:var(--amber);color:var(--amber)">В газели</div><div class="flow-label">Погрузка<br>Скан</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-dot" style="background:var(--blue-bg);border-color:var(--blue);color:var(--blue)">На складе</div><div class="flow-label">Ячейка ИРИТ<br>Привязана</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-dot" style="background:var(--green-bg);border-color:var(--green);color:var(--green)">Выдана</div><div class="flow-label">Октябрь<br>Акт подписан</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">Варианты реализации системы</div>
+        <div class="impl-cards">
+          <div class="impl-card"><div class="impl-letter c-muted">A</div><div class="impl-name">Google Sheets + QR</div><div class="impl-desc">Бесплатно, просто. Нет offline.</div><div class="impl-tag tag-green">Бесплатно</div></div>
+          <div class="impl-card"><div class="impl-letter c-muted">B</div><div class="impl-name">Airtable + QR</div><div class="impl-desc">Удобный UI. Нужен платный тариф.</div><div class="impl-tag tag-amber">Платно</div></div>
+          <div class="impl-card"><div class="impl-letter c-muted">C</div><div class="impl-name">1С:Склад</div><div class="impl-desc">Готовое ПО с ячейками и актами.</div><div class="impl-tag tag-amber">Лицензия</div></div>
+          <div class="impl-card rec"><div class="impl-letter c-teal">D ★</div><div class="impl-name c-teal">Своя разработка</div><div class="impl-desc">FastAPI + PostgreSQL + React. 3–4 нед.</div><div class="impl-tag tag-teal">Рекомендуется</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Критические риски и решения</div>
+        <div class="risk"><div class="risk-icon" style="background:var(--coral-bg);color:var(--coral)">✕</div><div><div class="risk-title">Нет интернета на пункте</div><div class="risk-fix">→ Offline-режим + резервный бумажный журнал</div></div></div>
+        <div class="risk"><div class="risk-icon" style="background:var(--coral-bg);color:var(--coral)">⊘</div><div><div class="risk-title">Студент скопировал QR</div><div class="risk-fix">→ Хэш ID + дата + соль — копия не пройдёт проверку</div></div></div>
+        <div class="risk"><div class="risk-icon" style="background:var(--coral-bg);color:var(--coral)">◌</div><div><div class="risk-title">Наклейка отклеилась</div><div class="risk-fix">→ Дублирующий ярлык внутри каждой коробки</div></div></div>
+        <div class="risk"><div class="risk-icon" style="background:var(--amber-bg);color:var(--amber)">◷</div><div><div class="risk-title">Студент не пришёл в слот</div><div class="risk-fix">→ Авто-напоминание за 2 ч и 30 мин; слот в очередь</div></div></div>
+        <div class="risk"><div class="risk-icon" style="background:var(--amber-bg);color:var(--amber)">◫</div><div><div class="risk-title">Коробка потерялась</div><div class="risk-fix">→ Фото при погрузке + при разгрузке</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ПУТЬ СТУДЕНТА -->
+  <div class="page-section" id="sec-student">
+    <div class="block-gap">
+      <div class="sec-tag tag-teal">Блок 2</div>
+      <div class="sec-title">Путь студента — детальный сценарий</div>
+      <div class="sec-sub">Три дорожки: студент, приложение, волонтёры. Студент всегда знает что делать дальше.</div>
+
+      <div class="g4" style="margin-bottom:18px">
+        <div class="stat"><div class="stat-n c-purple">17</div><div class="stat-l">дней выезда</div></div>
+        <div class="stat"><div class="stat-n c-teal">238</div><div class="stat-l">слотов всего</div></div>
+        <div class="stat"><div class="stat-n c-amber">≈10</div><div class="stat-l">чел. реально на слот</div></div>
+        <div class="stat"><div class="stat-n c-blue">3</div><div class="stat-l">дня на упаковку</div></div>
+      </div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">Дорожки взаимодействия</div>
+        <div class="swimlane-wrap">
+          <div class="swimlane-row">
+            <div class="swimlane-label" style="color:var(--purple)">Студент</div>
+            <div class="swimlane-cells">
+              <div class="sw-cell" style="background:var(--purple-bg);color:var(--purple);border-color:var(--purple-border)">Получает уведомление</div>
+              <div class="sw-cell" style="background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)">Подписывает допсоглашение</div>
+              <div class="sw-cell" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Регистрируется, выбирает слот</div>
+              <div class="sw-cell" style="background:var(--coral-bg);color:var(--coral);border-color:var(--coral-border)">Приходит на пункт выдачи</div>
+              <div class="sw-cell" style="background:var(--surface2);color:var(--muted)">Упаковывает вещи</div>
+              <div class="sw-cell" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Бронирует слот сдачи</div>
+              <div class="sw-cell" style="background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)">Подписывает акт, сдаёт ключ</div>
+              <div class="sw-cell" style="background:var(--green-bg);color:var(--green);border-color:var(--green-border)">Уезжает / переезжает</div>
+            </div>
+          </div>
+          <div class="swimlane-row">
+            <div class="swimlane-label" style="color:var(--blue)">Приложение</div>
+            <div class="swimlane-cells">
+              <div class="sw-cell" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Push + email</div>
+              <div class="sw-cell" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Фиксирует в БД</div>
+              <div class="sw-cell" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Показывает слоты, QR</div>
+              <div class="sw-cell" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Генерирует наклейки</div>
+              <div class="sw-cell" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Чеклист + напоминания</div>
+              <div class="sw-cell" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Слоты сдачи + SMS</div>
+              <div class="sw-cell" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Статус «сдано»</div>
+              <div class="sw-cell" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Уведомление о возврате</div>
+            </div>
+          </div>
+          <div class="swimlane-row">
+            <div class="swimlane-label" style="color:var(--coral)">Волонтёры</div>
+            <div class="swimlane-cells">
+              <div class="sw-cell empty">—</div><div class="sw-cell empty">—</div><div class="sw-cell empty">—</div>
+              <div class="sw-cell" style="background:var(--coral-bg);color:var(--coral);border-color:var(--coral-border)">Сканируют QR, выдают коробки</div>
+              <div class="sw-cell empty">—</div>
+              <div class="sw-cell" style="background:var(--coral-bg);color:var(--coral);border-color:var(--coral-border)">Бригада 2 чел. в комнату</div>
+              <div class="sw-cell" style="background:var(--coral-bg);color:var(--coral);border-color:var(--coral-border)">Фото, QR, акт</div>
+              <div class="sw-cell" style="background:var(--coral-bg);color:var(--coral);border-color:var(--coral-border)">Грузят газель, ИРИТ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Три варианта для студента</div>
+          <div class="card-sub">После подписания допсоглашения</div>
+          <div style="display:flex;gap:6px;margin-bottom:12px">
+            <div style="flex:1;background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r);padding:8px;font-size:11px;color:var(--green);text-align:center">Домой<br><span style="color:var(--muted)">до 20 000 ₽</span></div>
+            <div style="flex:1;background:var(--teal-bg);border:1px solid var(--teal-border);border-radius:var(--r);padding:8px;font-size:11px;color:var(--teal);text-align:center">Другое общежитие<br><span style="color:var(--muted)">бесплатно</span></div>
+            <div style="flex:1;background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r);padding:8px;font-size:11px;color:var(--green);text-align:center">Аренда<br><span style="color:var(--muted)">до 20 000 ₽</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="card-title" style="margin-bottom:8px">Правила слотов</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <span class="badge tag-amber">Слот фиксируется на 24 ч</span>
+            <span class="badge tag-amber">Перенос 1 раз</span>
+            <span class="badge tag-coral">Неявка = флаг</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Что фиксируется при сдаче</div>
+          <div class="field"><span class="field-k">Время сдачи</span><span class="field-v c-teal">автоматически</span></div>
+          <div class="field"><span class="field-k">Фото вещей</span><span class="field-v c-teal">3+ ракурса</span></div>
+          <div class="field"><span class="field-k">Подпись студента</span><span class="field-v c-teal">планшет / бумага</span></div>
+          <div class="field"><span class="field-k">ID волонтёра</span><span class="field-v c-teal">кто принял</span></div>
+          <div class="field"><span class="field-k">Кол-во объектов</span><span class="field-v c-teal">сверка по чеклисту</span></div>
+          <div class="divider"></div>
+          <div class="card-title" style="margin-bottom:8px">Состав стартпака</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <span class="badge tag-purple">Скотч + маркер</span>
+            <span class="badge tag-purple">Пломбы QR</span>
+            <span class="badge tag-purple">Чеклист</span>
+            <span class="badge tag-purple">Подарки спонсоров</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ВОЛОНТЁРЫ -->
+  <div class="page-section" id="sec-vols">
+    <div class="block-gap">
+      <div class="sec-tag tag-coral">Блок 3</div>
+      <div class="sec-title">Система волонтёров</div>
+      <div class="sec-sub">20 человек в смену, 80 в пуле. Каждый знает свою роль, зону и инструкцию.</div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">Распределение 20 человек в смену</div>
+        <div class="vol-row"><div class="vol-count c-coral">6</div><div style="flex:1"><div class="vol-title">Пункты выдачи — 3 палатки × 2 чел.</div><div class="vol-desc">Сканирование ID, печать наклеек, выдача коробок и стартпаков</div></div><span class="badge tag-coral">Выдача</span></div>
+        <div class="vol-row"><div class="vol-count c-purple">8</div><div style="flex:1"><div class="vol-title">Бригады переноски — 4 бригады × 2 чел.</div><div class="vol-desc">Приходят в комнату, несут вещи на тележке до накопительного пункта</div></div><span class="badge tag-purple">Переноска</span></div>
+        <div class="vol-row"><div class="vol-count c-teal">3</div><div style="flex:1"><div class="vol-title">Накопительный пункт — приём и фото</div><div class="vol-desc">Финальный скан QR, фотофиксация, подписание актов на планшете</div></div><span class="badge tag-teal">Приём</span></div>
+        <div class="vol-row"><div class="vol-count c-blue">2</div><div style="flex:1"><div class="vol-title">Логистика — погрузка и ИРИТ</div><div class="vol-desc">Сопровождают вещи до склада, расставляют по ячейкам</div></div><span class="badge tag-blue">Транспорт</span></div>
+        <div class="vol-row" style="margin-bottom:0"><div class="vol-count c-amber">1</div><div style="flex:1"><div class="vol-title">Координатор — система, связь, решения</div><div class="vol-desc">Мониторит дашборд, перераспределяет людей, решает инциденты</div></div><span class="badge tag-amber">Координатор</span></div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">График смен</div>
+          <div class="field"><span class="field-k">Смена 1 (утро)</span><span class="field-v c-amber">07:00 – 14:00</span></div>
+          <div class="field"><span class="field-k">Смена 2 (вечер)</span><span class="field-v c-amber">14:00 – 21:00</span></div>
+          <div class="field"><span class="field-k">Нужно в сутки</span><span class="field-v">40 чел. (2 × 20)</span></div>
+          <div class="field"><span class="field-k">Дней на 1 волонтёра</span><span class="field-v">~8–9 из 17</span></div>
+          <div class="field"><span class="field-k">Пиковые дни</span><span class="field-v c-coral">+4 резерва</span></div>
+          <div class="divider"></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <span class="badge tag-coral">15–17 июня — пик</span>
+            <span class="badge tag-amber">28–30 июня — финиш</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Инструментарий + протоколы</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">
+            <span class="badge tag-blue">Телефон + приложение</span>
+            <span class="badge tag-purple">Жилет с ролью</span>
+            <span class="badge tag-teal">Тележка (бригада)</span>
+            <span class="badge tag-teal">Планшет для подписей</span>
+            <span class="badge tag-coral">Карточка-инструкция</span>
+            <span class="badge tag-amber">Рация (координатор)</span>
+          </div>
+          <div class="divider"></div>
+          <div class="risk"><div class="risk-icon" style="background:var(--amber-bg);color:var(--amber)">!</div><div><div class="risk-title" style="font-size:11px">Студент не пришёл</div><div class="risk-fix">Отметить в системе → слот в очередь ожидания</div></div></div>
+          <div class="risk"><div class="risk-icon" style="background:var(--amber-bg);color:var(--amber)">!</div><div><div class="risk-title" style="font-size:11px">Конфликт со студентом</div><div class="risk-fix">Только координатор — волонтёр не вступает в спор</div></div></div>
+          <div class="risk"><div class="risk-icon" style="background:var(--amber-bg);color:var(--amber)">!</div><div><div class="risk-title" style="font-size:11px">Не хватает коробок</div><div class="risk-fix">Координатор запрашивает со склада — пункт не стоит</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- КАРТА ХРАНЕНИЯ -->
+  <div class="page-section" id="sec-storage">
+    <div class="block-gap">
+      <div class="sec-tag tag-blue">Блок 4</div>
+      <div class="sec-title">Карта хранения ИРИТ-РТФ</div>
+      <div class="sec-sub">Зал разбит на ячейки 3×3 м. Три зоны А, Б, В. Нажми на ячейку — увидишь данные студента.</div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div class="g4" style="margin-bottom:14px">
+          <div class="stat"><div class="stat-n c-blue">60</div><div class="stat-l">всего ячеек</div></div>
+          <div class="stat"><div class="stat-n c-green">18</div><div class="stat-l">свободно</div></div>
+          <div class="stat"><div class="stat-n c-blue">36</div><div class="stat-l">занято</div></div>
+          <div class="stat"><div class="stat-n c-amber">6</div><div class="stat-l">резерв</div></div>
+        </div>
+        <div style="display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)"><div style="width:11px;height:11px;border-radius:3px;background:var(--green-bg);border:1px solid var(--green-border)"></div>Свободно</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)"><div style="width:11px;height:11px;border-radius:3px;background:var(--blue-bg);border:1px solid var(--blue-border)"></div>Занято</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)"><div style="width:11px;height:11px;border-radius:3px;background:var(--amber-bg);border:1px solid var(--amber-border)"></div>Резерв</div>
+        </div>
+        <div class="map-zone"><div class="zone-title c-teal">Зона А — ряды А01–А20</div><div class="cells-grid" id="zA"></div></div>
+        <div style="text-align:center;padding:7px;font-size:10px;color:var(--hint);letter-spacing:.08em;text-transform:uppercase;border:1px dashed var(--border);border-radius:var(--r);margin-bottom:10px">Проход 1.5 м</div>
+        <div class="map-zone"><div class="zone-title c-blue">Зона Б — ряды Б01–Б20</div><div class="cells-grid" id="zB"></div></div>
+        <div style="text-align:center;padding:7px;font-size:10px;color:var(--hint);letter-spacing:.08em;text-transform:uppercase;border:1px dashed var(--border);border-radius:var(--r);margin-bottom:10px">Проход 1.5 м</div>
+        <div class="map-zone"><div class="zone-title c-purple">Зона В — В01–В20 (резервная)</div><div class="cells-grid" id="zC"></div></div>
+        <div style="text-align:center;margin-top:12px"><div style="display:inline-block;background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--r);padding:8px 28px;font-size:11px;font-weight:600;color:var(--coral)">ВХОД / ВЫХОД — газель разгружается здесь</div></div>
+      </div>
+      <div class="card" id="cellCard" style="display:none;border-color:var(--blue-border)">
+        <div class="card-title" id="cellCardTitle"></div>
+        <div id="cellCardBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ТАЙМ-ЛАЙ Н -->
+  <div class="page-section" id="sec-timeline">
+    <div class="block-gap">
+      <div class="sec-tag tag-amber">Тайм-лайн</div>
+      <div class="sec-title">Хронология июнь – октябрь</div>
+      <div class="sec-sub">Полная последовательность: мероприятие → выезд → хранение → возврат.</div>
+      <div class="g2">
+        <div class="card">
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-dot" style="border-color:var(--purple);background:var(--purple)"></div><div class="tl-date">До 15 июня</div><div class="tl-title">Молодёжное мероприятие в кампусе</div><div class="tl-desc">Кампус НВК используется для гостей. Это триггер всего процесса переезда студентов.</div></div>
+            <div class="tl-item"><div class="tl-dot" style="border-color:var(--amber);background:var(--amber)"></div><div class="tl-date">Июль (старт)</div><div class="tl-title">Информационная кампания</div><div class="tl-desc">Плакаты, маскот, брендбук, соцсети, FAQ. Первые уведомления студентам.</div></div>
+            <div class="tl-item"><div class="tl-dot" style="border-color:var(--amber)"></div><div class="tl-date">Июль — 14 июня</div><div class="tl-title">Сбор допсоглашений и регистрация</div><div class="tl-desc">Подписание, регистрация в приложении, бронирование слотов, заявки на компенсацию.</div></div>
+            <div class="tl-item"><div class="tl-dot" style="border-color:var(--coral);background:var(--coral)"></div><div class="tl-date">15 июня — 1 июля ★</div><div class="tl-title">Основной период выезда</div><div class="tl-desc">14 слотов/день, 3 палатки, 20 волонтёров/смену. Вещи едут в ИРИТ.</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-dot" style="border-color:var(--blue);background:var(--blue)"></div><div class="tl-date">Июль — Сентябрь</div><div class="tl-title">Хранение в ИРИТ-РТФ</div><div class="tl-desc">Охрана 24/7. QR-дашборд активен. Студенты живут дома, в общежитиях или на аренде.</div></div>
+            <div class="tl-item"><div class="tl-dot" style="border-color:var(--blue)"></div><div class="tl-date">Середина сентября</div><div class="tl-title">Уведомления о возврате</div><div class="tl-desc">Push/SMS студентам, открытие слотов возврата, подготовка склада к выдаче.</div></div>
+            <div class="tl-item"><div class="tl-dot" style="border-color:var(--green);background:var(--green)"></div><div class="tl-date">1–5 октября ★</div><div class="tl-title">Возврат вещей и заселение</div><div class="tl-desc">Студенты получают вещи из ИРИТ, подписывают акты, заезжают в кампус.</div></div>
+            <div class="tl-item"><div class="tl-dot" style="border-color:var(--purple)"></div><div class="tl-date">Октябрь</div><div class="tl-title">Закрытие проекта</div><div class="tl-desc">Опросы, финотчёт по компенсациям, архивация базы данных.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ГАЗЕЛИ -->
+  <div class="page-section" id="sec-gazelle">
+    <div class="block-gap">
+      <div class="sec-tag tag-amber">Транспорт</div>
+      <div class="sec-title">Расчёт количества газелей</div>
+      <div class="sec-sub">2 259 студентов × 0,54 м³ = 1 220 м³ общий объём. Газель Next: ~12 м³ реальной загрузки, 4 рейса в день.</div>
+
+      <div class="g4" style="margin-bottom:18px">
+        <div class="stat"><div class="stat-n c-amber">1 220</div><div class="stat-l">м³ общий объём</div></div>
+        <div class="stat"><div class="stat-n c-blue">12</div><div class="stat-l">м³ за 1 рейс</div></div>
+        <div class="stat"><div class="stat-n c-teal">4</div><div class="stat-l">рейса/день</div></div>
+        <div class="stat"><div class="stat-n c-coral">2</div><div class="stat-l">газели штатно</div></div>
+      </div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">Логика расчёта</div>
+        <div class="calc-wrap">
+          <div class="calc-row"><span class="calc-label">2 259 × 0,54 м³</span><span class="calc-val c-purple">= 1 220 м³ всего</span></div>
+          <div class="calc-row"><span class="calc-label">1 220 ÷ 17 дней</span><span class="calc-val">= 72 м³/день</span></div>
+          <div class="calc-row"><span class="calc-label">1 газель: 4 рейса × 12 м³</span><span class="calc-val">= 48 м³/день</span></div>
+          <div class="calc-row"><span class="calc-label">72 ÷ 48 = 1,5 → округляем</span><span class="calc-val c-coral">= 2 газели в день</span></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">Цены аренды газели — Екатеринбург 2025</div>
+        <div class="g3">
+          <div class="van-card">
+            <div class="van-title">Стандарт Экспресс</div>
+            <div class="van-price c-amber">от 400 ₽/час</div>
+            <div class="van-desc">Газель с водителем, круглосуточно</div>
+            <div class="van-note"><a class="source-link" href="https://ekaterinburg.standart-express.ru/services/arenda-gazeli-s-voditelem/" target="_blank">↗ standart-express.ru</a></div>
+          </div>
+          <div class="van-card" style="border-color:var(--teal-border)">
+            <div class="van-title c-teal">Три Богатыря</div>
+            <div class="van-price c-teal">от 550 ₽/час</div>
+            <div class="van-desc">Специализированные авто для переездов</div>
+            <div class="van-note"><a class="source-link" href="https://3boga.ru/arenda-gazeli-s-voditelem" target="_blank">↗ 3boga.ru</a></div>
+          </div>
+          <div class="van-card">
+            <div class="van-title">Автокомфорт</div>
+            <div class="van-price c-amber">от 400 ₽/час</div>
+            <div class="van-desc">Бортовая газель с водителем по Екатеринбургу</div>
+            <div class="van-note"><a class="source-link" href="https://avtokomfort-ekb.ru/services/preimushchestva-arendi-gazeli" target="_blank">↗ avtokomfort-ekb.ru</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Итог транспортных расходов</div>
+        <table class="budget-table">
+          <thead><tr><th>Позиция</th><th class="qty">Кол-во</th><th class="price">₽/день</th><th class="price">Дней</th><th class="price">Итого</th></tr></thead>
+          <tbody>
+            <tr><td>Газель с водителем — штатный режим</td><td class="qty">2</td><td class="price">7 000</td><td class="price">17</td><td class="price c-amber">238 000 ₽</td></tr>
+            <tr><td>Газель — пиковые дни (15–17 июня)</td><td class="qty">1</td><td class="price">7 000</td><td class="price">3</td><td class="price c-amber">21 000 ₽</td></tr>
+            <tr><td>Газели для возврата (октябрь)</td><td class="qty">2</td><td class="price">7 000</td><td class="price">5</td><td class="price c-amber">70 000 ₽</td></tr>
+            <tr class="total-row"><td colspan="4">Итого транспорт</td><td class="price c-coral">329 000 ₽</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- РАСХОДНИКИ -->
+  <div class="page-section" id="sec-materials">
+    <div class="block-gap">
+      <div class="sec-tag tag-teal">Расходники</div>
+      <div class="sec-title">Упаковочные материалы</div>
+      <div class="sec-sub">Цены Сима-Ленд (sima-land.ru), оптовые, май 2025. Коробка 60×40×40 арт. 7608375 — 119 ₽/опт.</div>
+
+      <div class="card">
+        <table class="budget-table">
+          <thead><tr><th>Материал</th><th>Кол-во</th><th class="price">Цена (опт)</th><th class="price">Сумма</th><th>Источник</th></tr></thead>
+          <tbody>
+            <tr class="sec-header"><td colspan="5">Коробки и упаковка</td></tr>
+            <tr><td>Коробка 60×40×40 бурая, арт. 7608375</td><td class="qty">4 518 шт.</td><td class="price c-teal">119 ₽</td><td class="price c-amber">537 642 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/7608375/korobka-skladnaya-buraya-dlya-upakovki-hraneniya-i-pereezda-60-40-40-cm/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Чехол полиэтиленовый для матраса 90×200</td><td class="qty">2 259 шт.</td><td class="price c-teal">55 ₽</td><td class="price c-amber">124 245 ₽</td><td><a class="source-link" href="https://market.yandex.ru/search?text=пакеты+для+упаковки+матраса" target="_blank">↗ market.yandex.ru</a></td></tr>
+            <tr><td>Большой пакет 120×150 см (крупные вещи)</td><td class="qty">2 259 шт.</td><td class="price c-teal">15 ₽</td><td class="price c-amber">33 885 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/upakovka/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr class="sec-header"><td colspan="5">Скотч и фиксация</td></tr>
+            <tr><td>Скотч прозрачный 48мм×150м, арт. 10873705</td><td class="qty">600 рул.</td><td class="price c-teal">108 ₽</td><td class="price c-amber">64 800 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/10873705/skotch-prozrachnyy-48-mm-150-m-40-mkm/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Стретч-плёнка для крупных вещей</td><td class="qty">80 рул.</td><td class="price c-teal">110 ₽</td><td class="price c-amber">8 800 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/upakovka/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Пузырчатая плёнка — хрупкие вещи</td><td class="qty">40 рул.</td><td class="price c-teal">280 ₽</td><td class="price c-amber">11 200 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/upakovka/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Маркеры перманентные</td><td class="qty">250 шт.</td><td class="price c-teal">38 ₽</td><td class="price c-amber">9 500 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/kanctovary/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr class="sec-header"><td colspan="5">Маркировка</td></tr>
+            <tr><td>Пломбы-стикеры одноразовые нумерованные</td><td class="qty">12 000 шт.</td><td class="price c-teal">4 ₽</td><td class="price c-amber">48 000 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/upakovka/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Бумажные ярлыки внутрь коробки</td><td class="qty">10 000 шт.</td><td class="price c-teal">2 ₽</td><td class="price c-amber">20 000 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/upakovka/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Цветная лента для зонирования склада</td><td class="qty">20 рул.</td><td class="price c-teal">30 ₽</td><td class="price c-amber">600 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/kanctovary/ofisnye-prinadlezhnosti/kleykaya-kancelyarskaya-lenta/sinyaya-fps/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr class="total-row"><td colspan="3">Итого расходники</td><td class="price c-coral" colspan="2">858 672 ₽</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАПАХ -->
+  <div class="page-section" id="sec-smell">
+    <div class="block-gap">
+      <div class="sec-tag tag-coral">Запах и влага</div>
+      <div class="sec-title">Защита от запаха на 3 месяца хранения</div>
+      <div class="sec-sub">Холодильники, обувь, текстиль — основные источники проблем при длительном хранении.</div>
+
+      <div class="g2" style="margin-bottom:12px">
+        <div class="card">
+          <div class="card-title">Протокол холодильника</div>
+          <div class="smell-item"><div class="smell-icon" style="background:var(--blue-bg);color:var(--blue)">1</div><div><div class="smell-title">Разморозить и просушить</div><div class="smell-desc">За 48 часов — отключить, разморозить, протереть насухо все поверхности и уплотнители</div></div></div>
+          <div class="smell-item"><div class="smell-icon" style="background:var(--teal-bg);color:var(--teal)">2</div><div><div class="smell-title">Активированный уголь + пищевая сода</div><div class="smell-desc">1 пакет угля 100–200 г + открытая ёмкость с содой. Поглощают запахи за 3 месяца</div></div></div>
+          <div class="smell-item"><div class="smell-icon" style="background:var(--amber-bg);color:var(--amber)">3</div><div><div class="smell-title">Оставить дверцу приоткрытой</div><div class="smell-desc">Зазор 2–3 см для циркуляции воздуха. Или угольный пакет в проёме двери</div></div></div>
+          <div class="smell-item"><div class="smell-icon" style="background:var(--coral-bg);color:var(--coral)">4</div><div><div class="smell-title">Пломбировка при сдаче</div><div class="smell-desc">Волонтёр наклеивает широкий скотч по периметру двери. Фото. Акт.</div></div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Расходники — запах и влага</div>
+          <div class="field"><span class="field-k">Силикагель 50 г (одежда/обувь)</span><span class="field-v">6 000 шт. × 7 ₽ = <span class="c-amber">42 000 ₽</span></span></div>
+          <div class="field"><span class="field-k">Активированный уголь 100 г</span><span class="field-v">2 259 шт. × 25 ₽ = <span class="c-amber">56 475 ₽</span></span></div>
+          <div class="field"><span class="field-k">Пищевая сода 500 г</span><span class="field-v">2 259 шт. × 18 ₽ = <span class="c-amber">40 662 ₽</span></span></div>
+          <div class="field"><span class="field-k">Влагопоглотитель подвесной</span><span class="field-v">2 000 шт. × 45 ₽ = <span class="c-amber">90 000 ₽</span></span></div>
+          <div class="field"><span class="field-k">Антимоль-пластины</span><span class="field-v">2 000 шт. × 18 ₽ = <span class="c-amber">36 000 ₽</span></span></div>
+          <div class="field"><span class="field-k">Скотч для пломбировки холодильника</span><span class="field-v">400 рул. × 65 ₽ = <span class="c-amber">26 000 ₽</span></span></div>
+          <div class="divider"></div>
+          <div class="field"><span class="field-k" style="font-weight:600">Итого</span><span class="field-v c-coral" style="font-weight:600">291 137 ₽</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ОБОРУДОВАНИЕ -->
+  <div class="page-section" id="sec-equipment">
+    <div class="block-gap">
+      <div class="sec-tag tag-blue">Оборудование</div>
+      <div class="sec-title">Оборудование пунктов и склада</div>
+      <div class="sec-sub">Разовые покупки. После проекта остаются у университета.</div>
+      <div class="card">
+        <table class="budget-table">
+          <thead><tr><th>Позиция</th><th class="qty">Кол-во</th><th class="price">Цена</th><th class="price">Сумма</th><th>Источник</th></tr></thead>
+          <tbody>
+            <tr class="sec-header"><td colspan="5">Пункты выдачи</td></tr>
+            <tr><td>Термопринтер АТОЛ BP41 / аналог</td><td class="qty">3 шт.</td><td class="price c-teal">7 500 ₽</td><td class="price c-amber">22 500 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Рулоны этикеток 57мм (1 500 шт./рулон)</td><td class="qty">30 рул.</td><td class="price c-teal">180 ₽</td><td class="price c-amber">5 400 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Планшеты Android для волонтёров</td><td class="qty">6 шт.</td><td class="price c-teal">7 000 ₽</td><td class="price c-amber">42 000 ₽</td><td>—</td></tr>
+            <tr><td>Палатки-тенты 3×3 м</td><td class="qty">3 шт.</td><td class="price c-teal">6 500 ₽</td><td class="price c-amber">19 500 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Складные столы</td><td class="qty">6 шт.</td><td class="price c-teal">1 800 ₽</td><td class="price c-amber">10 800 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr class="sec-header"><td colspan="5">Логистика</td></tr>
+            <tr><td>Грузовые тележки платформенные 600×900</td><td class="qty">8 шт.</td><td class="price c-teal">3 200 ₽</td><td class="price c-amber">25 600 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Перчатки рабочие (от 7,6 ₽/пара)</td><td class="qty">500 пар</td><td class="price c-teal">8 ₽</td><td class="price c-amber">4 000 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/stroitelstvo-i-remont/rashodniki/sredstva-individualnoy-zaschity/perchatki/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr class="sec-header"><td colspan="5">Связь</td></tr>
+            <tr><td>Рации для координаторов</td><td class="qty">4 шт.</td><td class="price c-teal">2 200 ₽</td><td class="price c-amber">8 800 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr><td>Жилеты волонтёров с маркировкой</td><td class="qty">85 шт.</td><td class="price c-teal">350 ₽</td><td class="price c-amber">29 750 ₽</td><td><a class="source-link" href="https://www.sima-land.ru/" target="_blank">↗ sima-land.ru</a></td></tr>
+            <tr class="total-row"><td colspan="3">Итого оборудование</td><td class="price c-coral" colspan="2">168 350 ₽</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ИТОГОВАЯ СМЕТА -->
+  <div class="page-section" id="sec-budget">
+    <div class="block-gap">
+      <div class="sec-tag tag-purple">Смета</div>
+      <div class="sec-title">Итоговый бюджет проекта</div>
+      <div class="sec-sub">Все цены проверены май 2025. Резерв 15% — обязательная статья.</div>
+
+      <div class="total-card" style="margin-bottom:12px">
+        <div class="total-row"><span class="total-label">Транспорт (газели, 17 дней + октябрь)</span><span class="total-val">329 000 ₽</span></div>
+        <div class="total-row"><span class="total-label">Упаковочные расходники</span><span class="total-val">858 672 ₽</span></div>
+        <div class="total-row"><span class="total-label">Защита от запаха и влаги</span><span class="total-val">291 137 ₽</span></div>
+        <div class="total-row"><span class="total-label">Оборудование (принтеры, тележки, планшеты)</span><span class="total-val">168 350 ₽</span></div>
+        <div class="total-row" style="border-top:1px solid rgba(124,111,224,0.3)"><span class="total-label">Итого без резерва</span><span class="total-val">1 647 159 ₽</span></div>
+        <div class="total-row"><span class="total-label">Резерв 15%</span><span class="total-val">247 074 ₽</span></div>
+        <div class="total-row"><span class="total-label" style="font-size:14px;color:var(--text)">Итого с резервом</span><span class="total-main total-val">≈ 1 894 233 ₽</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Как снизить смету</div>
+        <div class="g2">
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Спонсорство</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="background:var(--surface2);border-radius:var(--r);padding:9px;font-size:12px"><div style="font-weight:600;color:var(--teal);margin-bottom:2px">Коробки с брендингом — до 250 000 ₽</div><div style="color:var(--muted);font-size:11px">Производители упаковки охотно поддерживают студенческие проекты</div></div>
+              <div style="background:var(--surface2);border-radius:var(--r);padding:9px;font-size:12px"><div style="font-weight:600;color:var(--teal);margin-bottom:2px">Стартпак от партнёров — до 100 000 ₽</div><div style="color:var(--muted);font-size:11px">Кофейни, доставка, сервисы — кладут промо за доступ к аудитории</div></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Оптимизация</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="background:var(--surface2);border-radius:var(--r);padding:9px;font-size:12px"><div style="font-weight:600;color:var(--amber);margin-bottom:2px">Оптовый договор с Сима-Ленд</div><div style="color:var(--muted);font-size:11px">От 200 000 ₽ — скидка 5–12%, самовывоз в Екатеринбурге бесплатно</div></div>
+              <div style="background:var(--surface2);border-radius:var(--r);padding:9px;font-size:12px"><div style="font-weight:600;color:var(--amber);margin-bottom:2px">Долгосрочный договор с газелями</div><div style="color:var(--muted);font-size:11px">Фиксированная ставка на весь период — скидка 10–15%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <span style="font-size:12px;color:var(--muted)">Реалистичный бюджет после оптимизации:</span>
+          <span style="font-size:18px;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace">≈ 1 500 000 – 1 600 000 ₽</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- КАЛЬКУЛЯТОР -->
+  <div class="page-section" id="sec-calc">
+    <div class="block-gap">
+      <div class="sec-tag tag-green">Калькулятор</div>
+      <div class="sec-title">Интерактивный калькулятор</div>
+      <div class="sec-sub">Измени параметры — всё пересчитается автоматически.</div>
+
+      <div class="i-calc">
+        <div class="i-calc-row">
+          <span class="i-calc-label">Количество студентов</span>
+          <input type="range" min="500" max="5000" step="50" value="2259" id="sl_s" oninput="recalc()">
+          <span class="i-calc-val c-purple" id="v_s">2 259</span>
+        </div>
+        <div class="i-calc-row">
+          <span class="i-calc-label">Дней выезда</span>
+          <input type="range" min="5" max="30" step="1" value="17" id="sl_d" oninput="recalc()">
+          <span class="i-calc-val c-amber" id="v_d">17</span>
+        </div>
+        <div class="i-calc-row">
+          <span class="i-calc-label">Цена газели (₽/час)</span>
+          <input type="range" min="300" max="900" step="50" value="500" id="sl_v" oninput="recalc()">
+          <span class="i-calc-val c-teal" id="v_v">500 ₽</span>
+        </div>
+        <div class="result-grid">
+          <div class="result-item"><div class="result-n c-purple" id="r_vol">1 220</div><div class="result-l">м³ общий объём</div></div>
+          <div class="result-item"><div class="result-n c-amber" id="r_vd">2</div><div class="result-l">газели в день</div></div>
+          <div class="result-item"><div class="result-n c-teal" id="r_bx">4 518</div><div class="result-l">коробок всего</div></div>
+          <div class="result-item"><div class="result-n c-blue" id="r_vl">28</div><div class="result-l">волонтёров мин./день</div></div>
+          <div class="result-item"><div class="result-n c-coral" id="r_tr">329 000</div><div class="result-l">₽ транспорт</div></div>
+          <div class="result-item"><div class="result-n c-green" id="r_tt">1 894 000</div><div class="result-l">₽ итого (+15%)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+<button class="mobile-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+
+<script>
+const titles = {
+  home:['Главная','Операционный портал переезда кампуса НВК'],
+  qr:['QR-система и данные','Блок 1 — идентификация вещей и студентов'],
+  student:['Путь студента','Блок 2 — детальный сценарий по шагам'],
+  vols:['Волонтёры','Блок 3 — роли, смены, протоколы'],
+  storage:['Карта хранения','Блок 4 — ИРИТ-РТФ, зоны А / Б / В'],
+  timeline:['Тайм-лайн','Хронология июнь — октябрь 2025'],
+  gazelle:['Расчёт газелей','Транспорт — объём, количество, цены'],
+  materials:['Расходники','Упаковка — цены Сима-Ленд 2025'],
+  smell:['Запах и холодильники','Защита вещей на 3 месяца хранения'],
+  equipment:['Оборудование','Разовые закупки для пунктов и склада'],
+  budget:['Итоговая смета','≈ 1,9 млн ₽ с резервом 15%'],
+  calc:['Калькулятор','Интерактивный пересчёт ресурсов'],
+};
+
+function nav(id, btn) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else {
+    document.querySelectorAll('.sidebar-item').forEach(b => {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('active');
+    });
+  }
+  const t = titles[id] || [id, ''];
+  document.getElementById('topbar-title').textContent = t[0];
+  document.getElementById('topbar-sub').textContent = t[1];
+  document.getElementById('sidebar').classList.remove('open');
+  window.scrollTo ? window.scrollTo(0,0) : null;
+}
+
+const names = ['Алексеев М.','Борисова А.','Волков С.','Гусева Т.','Демин И.','Егорова К.','Жуков Р.','Иванов П.','Козлова Н.','Лебедев В.','Макаров Д.','Никитина О.','Орлов Е.','Петрова С.','Романов А.','Сидорова М.','Тимофеев К.','Ушакова Л.','Фёдоров И.','Чернов Н.'];
+const rooms = ['К1-101','К1-205','К2-112','К2-318','К3-201','К3-405','К4-110','К4-218','К5-302','К5-416'];
+
+function renderZone(zoneId, prefix) {
+  const grid = document.getElementById(zoneId);
+  if (!grid) return;
+  const pattern = [1,1,1,0,1,1,2,1,0,1,1,1,1,0,1,1,1,2,1,1];
+  for (let i = 0; i < 20; i++) {
+    const n = i+1;
+    const label = prefix+'-'+String(n).padStart(2,'0');
+    const st = pattern[i];
+    const cls = st===0?'cell-free':st===2?'cell-res':'cell-occ';
+    const sid = st===1 ? 'НВ-'+String(i*113+prefix.charCodeAt(0)*7+100).padStart(4,'0') : '';
+    const nameIdx = (i+prefix.charCodeAt(0)) % names.length;
+    const div = document.createElement('div');
+    div.className = 'cell-item '+cls;
+    div.innerHTML = '<div style="font-weight:600">'+label+'</div><div class="cell-id">'+(st===1?sid:st===2?'резерв':'свободно')+'</div>';
+    if (st===1) {
+      const nm = names[nameIdx];
+      const rm = rooms[(n+prefix.charCodeAt(0))%rooms.length];
+      div.onclick = () => showCell(label,sid,nm,rm);
+    } else div.onclick = () => showEmpty(label,st===2);
+    grid.appendChild(div);
+  }
+}
+renderZone('zA','А');renderZone('zB','Б');renderZone('zC','В');
+
+function showCell(label,sid,name,room) {
+  const c = document.getElementById('cellCard');
+  c.style.display='block';
+  document.getElementById('cellCardTitle').textContent='Ячейка '+label;
+  document.getElementById('cellCardBody').innerHTML=
+    '<div class="field"><span class="field-k">ID</span><span class="field-v c-blue">'+sid+'</span></div>'+
+    '<div class="field"><span class="field-k">Студент</span><span class="field-v">'+name+'</span></div>'+
+    '<div class="field"><span class="field-k">Комната</span><span class="field-v">'+room+'</span></div>'+
+    '<div class="field"><span class="field-k">Дата размещения</span><span class="field-v">'+(15+Math.floor(Math.random()*16))+'.06.2025</span></div>'+
+    '<div class="field"><span class="field-k">Статус</span><span class="field-v c-blue">на хранении</span></div>'+
+    '<div class="field"><span class="field-k">Фото</span><span class="field-v c-green">3 фото зафиксировано</span></div>';
+}
+function showEmpty(label,isRes) {
+  const c = document.getElementById('cellCard');
+  c.style.display='block';
+  document.getElementById('cellCardTitle').textContent='Ячейка '+label;
+  document.getElementById('cellCardBody').innerHTML=
+    '<div class="field"><span class="field-k">Статус</span><span class="field-v" style="color:'+(isRes?'var(--amber)':'var(--green)')+'">'+
+    (isRes?'Зарезервирована':'Свободна')+'</span></div>'+
+    '<div class="field"><span class="field-k">Студент</span><span class="field-v c-muted">не назначен</span></div>';
+}
+
+const db = [
+  {id:'НВ-2259-0001',name:'Иванов И.И.',room:'К4-218',cell:'А-14',status:'на хранении'},
+  {id:'НВ-2259-0042',name:'Петрова А.С.',room:'К2-105',cell:'А-02',status:'на хранении'},
+  {id:'К4-218',name:'Иванов И.И.',room:'К4-218',cell:'А-14',status:'на хранении'},
+  {id:'Иванов',name:'Иванов И.И.',room:'К4-218',cell:'А-14',status:'на хранении'},
+];
+function doSearch(v) {
+  const r = document.getElementById('sr');
+  if (v.length<3){r.classList.remove('visible');return;}
+  const f = db.find(d => Object.values(d).some(val => val.toLowerCase().includes(v.toLowerCase())));
+  r.classList.add('visible');
+  r.innerHTML = f
+    ? '<div style="font-size:11px;color:var(--muted);margin-bottom:8px">Найдено</div>'+
+      '<div class="field"><span class="field-k">ID</span><span class="field-v c-purple">'+f.id+'</span></div>'+
+      '<div class="field"><span class="field-k">Студент</span><span class="field-v">'+f.name+'</span></div>'+
+      '<div class="field"><span class="field-k">Комната</span><span class="field-v">'+f.room+'</span></div>'+
+      '<div class="field"><span class="field-k">Ячейка</span><span class="field-v c-blue">'+f.cell+'</span></div>'+
+      '<div class="field"><span class="field-k">Статус</span><span class="field-v c-teal">'+f.status+'</span></div>'
+    : '<div style="color:var(--muted);font-size:12px">Ничего не найдено по «'+v+'»</div>';
+}
+
+function fmt(n){return Math.round(n).toLocaleString('ru-RU')}
+function recalc(){
+  const s=parseInt(document.getElementById('sl_s').value);
+  const d=parseInt(document.getElementById('sl_d').value);
+  const v=parseInt(document.getElementById('sl_v').value);
+  document.getElementById('v_s').textContent=fmt(s);
+  document.getElementById('v_d').textContent=d;
+  document.getElementById('v_v').textContent=fmt(v)+' ₽';
+  const vol=s*0.54;
+  const vd=Math.ceil(vol/d/(4*12));
+  const bx=s*2;
+  const vl=Math.min(Math.ceil(s/d/10)*10+8,80);
+  const tr=vd*v*14*d + vd*v*14*5;
+  const mat=s*(119*2+55+15+108*0.3+4+2);
+  const sm=s*(7*3+25+18+40+18+12);
+  const eq=168350;
+  const tt=(tr+mat+sm+eq)*1.15;
+  document.getElementById('r_vol').textContent=fmt(vol);
+  document.getElementById('r_vd').textContent=vd;
+  document.getElementById('r_bx').textContent=fmt(bx);
+  document.getElementById('r_vl').textContent=vl;
+  document.getElementById('r_tr').textContent=fmt(tr);
+  document.getElementById('r_tt').textContent=fmt(tt);
+}
+recalc();
+</script>
+</body>
+</html>
